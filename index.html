@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Minecraft Challenge Spinner</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      font-family: 'Arial', sans-serif;
+      color: white;
+      text-align: center;
+      padding-top: 50px;
+      background-image: url('https://wallpapercave.com/wp/wp1811991.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #00ff00;
+      text-shadow: 2px 2px #000;
+    }
+
+    #wheel {
+      width: 300px;
+      height: 300px;
+      border: 10px solid #00aa00;
+      border-radius: 50%;
+      margin: 40px auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px #00ff00;
+      background-color: #222;
+    }
+
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      background-color: #44aa44;
+      color: white;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-shadow: 1px 1px #000;
+    }
+
+    #spinButton {
+      background-color: #00ff00;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: black;
+      cursor: pointer;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #00ff00;
+    }
+
+    #result {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: yellow;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Minecraft Challenge Spinner</h1>
+  <div id="wheel"></div>
+  <button id="spinButton">Spin the Wheel!</button>
+  <div id="result"></div>
+
+  <audio id="sound" src="saad-noob.mp3" preload="auto"></audio>
+
+  <script>
+    const challenges = [
+      "Survive the night without any weapons",
+      "Collect 10 diamonds",
+      "Build a house using only dirt",
+      "Fight a creeper with your fists",
+      "Make a farm with 5 animals",
+      "Trade with a villager",
+      "Mine 64 cobblestone",
+      "Build a Nether portal",
+      "Find a village",
+      "Tame a wolf",
+      "Fish until you get treasure",
+      "Go mining for 10 minutes straight"
+    ];
+
+    const wheel = document.getElementById('wheel');
+    const result = document.getElementById('result');
+    const sound = document.getElementById('sound');
+
+    // Draw wheel segments
+    const total = challenges.length;
+    for (let i = 0; i < total; i++) {
+      const segment = document.createElement('div');
+      segment.className = 'segment';
+      const angle = 360 / total * i;
+      segment.style.transform = `rotate(${angle}deg) translateX(-100%)`;
+      segment.innerText = challenges[i];
+      wheel.appendChild(segment);
+    }
+
+    let spinning = false;
+
+    document.getElementById('spinButton').onclick = function () {
+      if (spinning) return;
+      spinning = true;
+      result.innerText = '';
+      const spinDeg = 360 * 10 + Math.floor(Math.random() * 360);
+      wheel.style.transition = 'transform 5s ease-out';
+      wheel.style.transform = `rotate(${spinDeg}deg)`;
+
+      setTimeout(() => {
+        const selectedIndex = Math.floor((total - ((spinDeg % 360) / (360 / total))) % total);
+        result.innerText = `Challenge: ${challenges[selectedIndex]}`;
+        sound.play();
+        spinning = false;
+      }, 5200);
+    };
+  </script>
+
+</body>
+</html>
