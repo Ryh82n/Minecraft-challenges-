@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Minecraft Challenge Spinner</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Minecraft', sans-serif;
+      background: url('https://wallpapercave.com/wp/wp2832050.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      color: #4CAF50;
+      text-shadow: 2px 2px #000;
+    }
+
+    #wheel {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 10px solid #4CAF50;
+      margin: 30px auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 10px #000;
+      transition: transform 5s ease-out;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      transform-origin: 100% 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-right: 20px;
+      font-size: 12px;
+      color: white;
+    }
+
+    #spinBtn {
+      padding: 15px 40px;
+      font-size: 18px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Minecraft', sans-serif;
+      margin-top: 20px;
+    }
+
+    #pointer {
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-bottom: 30px solid red;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Minecraft Challenge Spinner</h1>
+  <div id="pointer"></div>
+  <div id="wheel"></div>
+  <button id="spinBtn">SPIN</button>
+
+  <!-- Sound -->
+  <audio id="saadSound" src="saad-noob.mp3" preload="auto"></audio>
+
+  <script>
+    const challenges = [
+      "No tools challenge",
+      "One chunk only",
+      "No armor allowed",
+      "No crafting table",
+      "You can't jump",
+      "Live in a cave",
+      "Use only wooden tools",
+      "No killing mobs",
+      "Play in F5 mode only",
+      "Speedrun to iron"
+    ];
+
+    const wheel = document.getElementById("wheel");
+    const spinBtn = document.getElementById("spinBtn");
+    const saadSound = document.getElementById("saadSound");
+
+    let angle = 360 / challenges.length;
+
+    // Create segments
+    challenges.forEach((challenge, index) => {
+      const segment = document.createElement("div");
+      segment.className = "segment";
+      segment.innerText = challenge;
+
+      const rotation = angle * index;
+      segment.style.transform = `rotate(${rotation}deg) translate(-100%)`;
+      segment.style.background = index % 2 === 0 ? "#3E8E41" : "#2C6E2E";
+
+      wheel.appendChild(segment);
+    });
+
+    spinBtn.addEventListener("click", () => {
+      const randomIndex = Math.floor(Math.random() * challenges.length);
+      const rotateDeg = 360 * 5 + (360 - randomIndex * angle - angle / 2);
+      wheel.style.transform = `rotate(${rotateDeg}deg)`;
+
+      setTimeout(() => {
+        saadSound.play();
+        alert("🎮 Your Challenge: " + challenges[randomIndex]);
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
